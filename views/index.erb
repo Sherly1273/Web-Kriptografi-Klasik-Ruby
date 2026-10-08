@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kriptografi Klasik</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="/static/style.css"
+    />
+  </head>
+
+  <body>
+    <header>
+      <div class="w">
+        <h1>Kriptografi Klasik</h1>
+        <p>
+          Enkripsi dan dekripsi pesan atau file dengan tujuh cipher klasik.
+          Semua file diproses per byte.
+        </p>
+      </div>
+    </header>
+
+    <main>
+      <!-- Panel kiri: pilihan cipher -->
+      <section class="card">
+        <h2>Pilih cipher</h2>
+        <div class="tiles" id="tiles">
+          <% Ciphers::CIPHERS.each_with_index do |(k, v), i| %>
+          <button
+            type="button"
+            class="tile<%= ' on' if i.zero? %>"
+            data-k="<%= k %>"
+          >
+            <b><%= v[0].split(' (')[0] %></b>
+            <small><%= v[0].include?('(') ? v[0].split(' (', 2)[1].chomp(')') : '' %></small>
+          </button>
+          <% end %>
+        </div>
+      </section>
+
+      <!-- Panel kanan: pesan, kunci, dan hasil -->
+      <section class="card">
+        <h2>Pesan</h2>
+
+        <div class="seg" role="tablist">
+          <button type="button" id="bt" class="on">Teks</button>
+          <button type="button" id="bf">File</button>
+        </div>
+
+        <div id="tr">
+          <label class="l" for="text">
+            Teks <span id="th" class="note"></span>
+          </label>
+          <textarea
+            id="text"
+            placeholder="Ketik atau tempel pesan di sini"
+          ></textarea>
+        </div>
+
+        <div class="drop" id="drop">
+          <input type="file" id="file" hidden />
+          <b id="fn">Pilih file atau seret ke sini</b>
+          Semua jenis file didukung
+        </div>
+
+        <div class="key-box">
+          <label class="l" for="key">Kunci</label>
+          <input type="text" id="key" autocomplete="off" />
+          <p class="hint" id="kh"></p>
+        </div>
+
+        <div class="acts">
+          <button class="btn e" id="e">Enkripsi</button>
+          <button class="btn d" id="d">Dekripsi</button>
+          <button class="btn g" id="dl" style="display: none">
+            Unduh sebagai file biner
+          </button>
+        </div>
+
+        <div id="err" role="alert"></div>
+
+        <div class="res" id="res">
+          <div class="rb">
+            <div class="rh">
+              Input (base64)
+              <span>
+                <button data-c="inb">Salin</button>
+                <button data-x="inb">Tampilkan semua</button>
+              </span>
+            </div>
+            <pre id="inb"></pre>
+          </div>
+
+          <div class="rb">
+            <div class="rh">
+              Output (base64, tanpa spasi)
+              <span>
+                <button data-c="outb">Salin</button>
+                <button data-x="outb">Tampilkan semua</button>
+              </span>
+            </div>
+            <pre id="outb" class="o"></pre>
+          </div>
+
+          <div class="rb">
+            <div class="rh">
+              Pratinjau teks
+              <span><button data-c="prev">Salin</button></span>
+            </div>
+            <pre id="prev"></pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>
